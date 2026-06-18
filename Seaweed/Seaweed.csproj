@@ -4,10 +4,24 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <PackageId>Viklover.Seaweed</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Mihail Vorobyev</Authors>
+    <Description>SeaweedFS .NET driver</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/viklover/Seaweed</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/viklover/Seaweed</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="JsonHelper.Net" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <None Include="..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
