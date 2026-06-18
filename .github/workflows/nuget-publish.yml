@@ -13,13 +13,15 @@ jobs:
     
     steps:
 
+      - uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "7.0.x"
       
       - name: Build package
-        run: dotnet pack -c Release Seaweed -o packages
+        run: dotnet pack -c Release Seaweed/Seaweed.csproj -o packages
 
       - name: NuGet login (OIDC → temp API key)
         uses: NuGet/login@v1
