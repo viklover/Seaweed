@@ -12,9 +12,14 @@ jobs:
       id-token: write
     
     steps:
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "7.0.x"
       
       - name: Build package
-        uses: dotnet pack -c Release Seaweed -o packages
+        run: dotnet pack -c Release Seaweed -o packages
 
       - name: NuGet login (OIDC → temp API key)
         uses: NuGet/login@v1
