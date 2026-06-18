@@ -1,4 +1,4 @@
-﻿namespace Viklover.Seaweed.Core;
+﻿namespace Viklover.Seaweed;
 /// <summary>
 ///     SeaweedFS exception
 /// </summary>

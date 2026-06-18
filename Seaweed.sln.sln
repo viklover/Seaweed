@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seaweed.Core", "Seaweed.Core\Seaweed.Core.csproj", "{D887CE97-D8C2-438E-A6E2-7E50DD0542C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seaweed", "Seaweed\Seaweed.csproj", "{D887CE97-D8C2-438E-A6E2-7E50DD0542C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seaweed.Core.Test", "Seaweed.Core.Test\Seaweed.Core.Test.csproj", "{550D9571-2E3B-4490-955B-284AA385F16E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seaweed.Test", "Seaweed.Test\Seaweed.Test.csproj", "{550D9571-2E3B-4490-955B-284AA385F16E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

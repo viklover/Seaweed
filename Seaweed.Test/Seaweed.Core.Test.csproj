@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Seaweed.Core/Seaweed.Core.csproj" />
+    <ProjectReference Include="../Seaweed/Seaweed.csproj" />
   </ItemGroup>
 
   <ItemGroup>
