@@ -5,8 +5,16 @@ namespace Viklover.Seaweed.Core.Test;
 ///     Integration tests to <see cref="SeaweedHttpClient"/>
 /// </summary>
 public class SeaweedHttpClientTest : SeaweedTest {
-    protected static readonly Uri MasterUri = new("http://localhost:9333");
-    protected static readonly string Collection = "TEST";
+    private readonly Uri MasterUri = new("http://localhost:9333");
+    private static readonly string Collection = "TEST";
+
+    public SeaweedHttpClientTest() {
+        var masterUriRaw = Environment.GetEnvironmentVariable("TEST_MASTER_URI");
+        if (masterUriRaw == null) {
+            throw new ArgumentNullException("Required 'TEST_MASTER_URI'");
+        }
+        MasterUri = new Uri(masterUriRaw);
+    }
 
     [Test(Description = "Test for correct file saving and reading")]
     public async Task SaveTest() {
@@ -38,7 +46,7 @@ public class SeaweedHttpClientTest : SeaweedTest {
         var readContent = await client.GetFileAsync(route, fileId, CancellationToken.None);
         Assert.That(readContent, Is.EqualTo(content).AsCollection);
         await client.DeleteAsync(route, fileId, CancellationToken.None);
-        Assert.ThrowsAsync<SeaweedException>(() => client.GetFileAsync(route, fileId, CancellationToken.None));
+        Assert.ThrowsAsync<SeaweedResponseException>(() => client.GetFileAsync(route, fileId, CancellationToken.None));
     }
     [Test(Description = "Test for correct file existance checking")]
     public async Task ExistsTest1() {
