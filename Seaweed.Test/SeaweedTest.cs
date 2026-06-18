@@ -1,4 +1,4 @@
-﻿namespace Viklover.Seaweed.Core.Test;
+﻿namespace Viklover.Seaweed.Test;
 /// <summary>
 ///     Abstract test to share utility methods
 /// </summary>

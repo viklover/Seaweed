@@ -1,7 +1,7 @@
 using System.Net;
-using Viklover.Seaweed.Core;
+using Viklover.Seaweed;
 
-namespace Viklover.Seaweed.Core.Process;
+namespace Viklover.Seaweed.Process;
 /// <summary>
 ///     Response exception
 /// </summary>

@@ -1,9 +1,9 @@
 using System.Net;
 using Newtonsoft.Json.Linq;
 using NewtonsoftJsonHelper;
-using Viklover.Seaweed.Core.Model;
+using Viklover.Seaweed.Model;
 
-namespace Viklover.Seaweed.Core.Process;
+namespace Viklover.Seaweed.Process;
 /// <summary>
 ///     SeaweedFS http client
 /// </summary>

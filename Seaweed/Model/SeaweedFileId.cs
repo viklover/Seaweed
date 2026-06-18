@@ -1,4 +1,4 @@
-namespace Viklover.Seaweed.Core.Model;
+namespace Viklover.Seaweed.Model;
 /// <summary>
 ///     Seaweed file identifier
 /// </summary>

@@ -1,6 +1,6 @@
-using Viklover.Seaweed.Core.Process;
+using Viklover.Seaweed.Process;
 
-namespace Viklover.Seaweed.Core.Test;
+namespace Viklover.Seaweed.Test;
 /// <summary>
 ///     Integration tests to <see cref="SeaweedHttpClient"/>
 /// </summary>

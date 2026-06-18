@@ -21,7 +21,7 @@ dotnet add package Viklover.Seaweed --version 1.0.0
 ```
 
 ```csharp
-using Viklover.Seaweed.Core.Process;
+using Viklover.Seaweed.Process;
 
 // Create client with master server URI and optional collection name
 
