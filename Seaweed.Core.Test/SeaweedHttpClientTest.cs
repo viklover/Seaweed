@@ -5,9 +5,17 @@ namespace Viklover.Seaweed.Core.Test;
 ///     Integration tests to <see cref="SeaweedHttpClient"/>
 /// </summary>
 public class SeaweedHttpClientTest : SeaweedTest {
-    protected static readonly Uri MasterUri = new("http://localhost:9333");
-    protected static readonly string Collection = "TEST";
+    private readonly Uri MasterUri = new("http://localhost:9333");
+    private static readonly string Collection = "TEST";
 
+    public SeaweedHttpClientTest() {
+        var masterUriRaw = Environment.GetEnvironmentVariable("TEST_MASTER_URI");
+        if (masterUriRaw == null) {
+            throw new ArgumentNullException("Required 'TEST_MASTER_URI'");
+        }
+        MasterUri = new Uri(masterUriRaw);
+    }
+    
     [Test(Description = "Test for correct file saving and reading")]
     public async Task SaveTest() {
         var client = new SeaweedHttpClient(MasterUri, Collection);

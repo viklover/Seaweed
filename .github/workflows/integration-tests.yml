@@ -1,0 +1,42 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      seaweedfs:
+        image: chrislusf/seaweedfs:latest
+        ports:
+          - 9333:9333
+          - 8081:8081
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "7.0.x"
+
+      - name: Wait for SeaweedFS
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:9333 > /dev/null 2>&1; then
+              echo "SeaweedFS is ready"
+              break
+            fi
+            echo "Waiting for SeaweedFS... ($i)"
+            sleep 2
+          done
+
+      - name: Run integration tests
+        run: dotnet test
+        env:
+          TEST_MASTER_URI: http://localhost:9333
