@@ -2,6 +2,7 @@
 
 Simple HTTP client implementation for [SeaweedFS](https://github.com/seaweedfs/seaweedfs) API.
 
+[![NuGet](https://badge.fury.io/nu/Viklover.Seaweed.svg)](https://www.nuget.org/packages/Viklover.Seaweed)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![CI/CD](https://github.com/viklover/seaweed/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/viklover/seaweed/actions/workflows/integration-tests.yml)
 
