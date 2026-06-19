@@ -18,7 +18,7 @@ public class SeaweedHttpClientTest : SeaweedTest {
     public async Task SaveTest() {
         var client = new SeaweedHttpClient(MasterUri);
         var content = GenerateByteArray();
-        var (fileId, route) = await client.AssignAsync(Collection, CancellationToken.None);
+        var (fileId, route) = await client.AssignAsync(CancellationToken.None, Collection);
         await client.UploadAsync(route, fileId, content, CancellationToken.None);
         var readContent = await client.FetchAsync(route, fileId, CancellationToken.None);
         Assert.That(readContent, Is.EqualTo(content).AsCollection);
@@ -27,9 +27,9 @@ public class SeaweedHttpClientTest : SeaweedTest {
     public async Task LookupVolumeRoutesTest() {
         var client = new SeaweedHttpClient(MasterUri);
         var content = GenerateByteArray();
-        var (fileId, route) = await client.AssignAsync(Collection, CancellationToken.None);
+        var (fileId, route) = await client.AssignAsync(CancellationToken.None, Collection);
         await client.UploadAsync(route, fileId, content, CancellationToken.None);
-        var lookupRouteArray = await client.LookupAsync(fileId.VolumeId, Collection, CancellationToken.None);
+        var lookupRouteArray = await client.LookupAsync(fileId.VolumeId, CancellationToken.None, Collection);
         Assert.That(lookupRouteArray, Is.Not.Empty);
         var lookupRoute = lookupRouteArray[0];
         var readContent = await client.FetchAsync(lookupRoute, fileId, CancellationToken.None);
@@ -39,7 +39,7 @@ public class SeaweedHttpClientTest : SeaweedTest {
     public async Task DeleteTest() {
         var client = new SeaweedHttpClient(MasterUri);
         var content = GenerateByteArray();
-        var (fileId, route) = await client.AssignAsync(Collection, CancellationToken.None);
+        var (fileId, route) = await client.AssignAsync(CancellationToken.None, Collection);
         await client.UploadAsync(route, fileId, content, CancellationToken.None);
         var readContent = await client.FetchAsync(route, fileId, CancellationToken.None);
         Assert.That(readContent, Is.EqualTo(content).AsCollection);
@@ -50,7 +50,7 @@ public class SeaweedHttpClientTest : SeaweedTest {
     public async Task ExistsTest1() {
         var client = new SeaweedHttpClient(MasterUri);
         var content = GenerateByteArray();
-        var (fileId, route) = await client.AssignAsync(Collection, CancellationToken.None);
+        var (fileId, route) = await client.AssignAsync(CancellationToken.None, Collection);
         await client.UploadAsync(route, fileId, content, CancellationToken.None);
         var exists = await client.ExistsFileAsync(route, fileId, CancellationToken.None);
         Assert.That(exists, Is.True);
@@ -59,7 +59,7 @@ public class SeaweedHttpClientTest : SeaweedTest {
     public async Task ExistsTest2() {
         var client = new SeaweedHttpClient(MasterUri);
         var content = GenerateByteArray();
-        var (fileId, route) = await client.AssignAsync(Collection, CancellationToken.None);
+        var (fileId, route) = await client.AssignAsync(CancellationToken.None, Collection);
         await client.UploadAsync(route, fileId, content, CancellationToken.None);
         var _ = await client.FetchAsync(route, fileId, CancellationToken.None);
         await client.DeleteAsync(route, fileId, CancellationToken.None);

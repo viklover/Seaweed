@@ -7,17 +7,17 @@ public interface ISeaweedClient {
     ///     Submit new file to SeaweedFS in async manner (POST /submit)
     /// </summary>
     /// <param name="file">File content</param>
-    /// <param name="collection">Collection name (optional)</param>
     /// <param name="cancellationToken">Cancellation token</param>
+    /// <param name="collection">Collection name (optional)</param>
     /// <returns>Async task to file submission</returns>
-    Task<SeaweedFileId> SubmitAsync(byte[] file, string? collection, CancellationToken cancellationToken);
+    Task<SeaweedFileId> SubmitAsync(byte[] file, CancellationToken cancellationToken, string? collection = null);
     /// <summary>
     ///     Assign a file key from SeaweedFS in async manner (GET /dir/assign)
     /// </summary>
-    /// <param name="collection">Collection name (optional)</param>
     /// <param name="cancellationToken">Cancellation token</param>
+    /// <param name="collection">Collection name (optional)</param>
     /// <returns>Async task to file key assignment</returns>
-    Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(string? collection, CancellationToken cancellationToken);
+    Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(CancellationToken cancellationToken, string? collection = null);
     /// <summary>
     ///     Upload file content by identifier in async manner
     /// </summary>
@@ -31,10 +31,10 @@ public interface ISeaweedClient {
     ///     Lookup volume routes by volume identifier in async manner (GET /dir/lookup)
     /// </summary>
     /// <param name="volumeId">Volume identifier</param>
-    /// <param name="collection">Collection name (optional)</param>
     /// <param name="cancellationToken">Cancellation token</param>
+    /// <param name="collection">Collection name (optional)</param>
     /// <returns>Async task to lookup volume routes</returns>
-    Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, string? collection, CancellationToken cancellationToken);
+    Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, CancellationToken cancellationToken, string? collection = null);
     /// <summary>
     ///     Get file content from volume server in async manner (GET /{fid})
     /// </summary>
