@@ -20,12 +20,12 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
         _collection = collection;
     }
     /// <summary>
-    ///     Upload file content in async manner
+    ///     Submit new file to SeaweedFS in async manner (POST /submit)
     /// </summary>
     /// <param name="file">File content</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Async task to file uplaoding</returns>
-    public async Task<SeaweedFileId> UploadAsync(byte[] file, CancellationToken cancellationToken) {
+    /// <returns>Async task to file submission</returns>
+    public async Task<SeaweedFileId> SubmitAsync(byte[] file, CancellationToken cancellationToken) {
         using var form = new MultipartFormDataContent();
         using var requestContent = new ByteArrayContent(file);
         form.Add(requestContent, "file", "document");
@@ -36,11 +36,11 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
         return fileId;
     }
     /// <summary>
-    ///     Create file in async manner
+    ///     Assign a file key from SeaweedFS in async manner (GET /dir/assign)
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Async task to file creation</returns>
-    public async Task<(SeaweedFileId, SeaweedVolumeRoute)> CreateFileAsync(CancellationToken cancellationToken) {
+    /// <returns>Async task to file key assignment</returns>
+    public async Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(CancellationToken cancellationToken) {
         var parameters = new Dictionary<string, string?> {
             ["collection"] = _collection
         };
@@ -71,12 +71,12 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
         await ExecuteJsonAsync(request, cancellationToken);
     }
     /// <summary>
-    ///     Lookup volume routes by volume identifier in async manner
+    ///     Lookup volume routes by volume identifier in async manner (GET /dir/lookup)
     /// </summary>
     /// <param name="volumeId">Volume identifier</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to lookup volume routes</returns>
-    public async Task<SeaweedVolumeRoute[]> LookupVolumeRoutesAsync(int volumeId, CancellationToken cancellationToken) {
+    public async Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, CancellationToken cancellationToken) {
         var parameters = new Dictionary<string, string?> {
             ["volumeId"] = volumeId.ToString(),
             ["collection"] = _collection
@@ -93,13 +93,13 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
         return routeArray;
     }
     /// <summary>
-    ///     Get file content in async manner
+    ///     Get file content from volume server in async manner (GET /{fid})
     /// </summary>
     /// <param name="route">Volume route</param>
     /// <param name="fileId">File identifier</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Async task to file downloading</returns>
-    public async Task<byte[]> GetFileAsync(SeaweedVolumeRoute route, SeaweedFileId fileId, CancellationToken cancellationToken) {
+    /// <returns>Async task to file fetching</returns>
+    public async Task<byte[]> FetchAsync(SeaweedVolumeRoute route, SeaweedFileId fileId, CancellationToken cancellationToken) {
         var fileUri = new Uri(route.Route, fileId.ToString());
         using var request = new HttpRequestMessage(HttpMethod.Get, fileUri);
         using var response = await ExecuteAsync(request, cancellationToken);

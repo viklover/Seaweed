@@ -4,18 +4,18 @@ namespace Viklover.Seaweed.Model;
 /// </summary>
 public interface ISeaweedClient {
     /// <summary>
-    ///     Upload file content in async manner
+    ///     Submit new file to SeaweedFS in async manner (POST /submit)
     /// </summary>
     /// <param name="file">File content</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Async task to file uplaoding</returns>
-    Task<SeaweedFileId> UploadAsync(byte[] file, CancellationToken cancellationToken);
+    /// <returns>Async task to file submission</returns>
+    Task<SeaweedFileId> SubmitAsync(byte[] file, CancellationToken cancellationToken);
     /// <summary>
-    ///     Create file in async manner
+    ///     Assign a file key from SeaweedFS in async manner (GET /dir/assign)
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Async task to file creation</returns>
-    Task<(SeaweedFileId, SeaweedVolumeRoute)> CreateFileAsync(CancellationToken cancellationToken);
+    /// <returns>Async task to file key assignment</returns>
+    Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(CancellationToken cancellationToken);
     /// <summary>
     ///     Upload file content by identifier in async manner
     /// </summary>
@@ -26,20 +26,20 @@ public interface ISeaweedClient {
     /// <returns>Async task to file uploading</returns>
     Task UploadAsync(SeaweedVolumeRoute route, SeaweedFileId fileId, byte[] content, CancellationToken cancellationToken);
     /// <summary>
-    ///     Lookup volume routes by volume identifier in async manner
+    ///     Lookup volume routes by volume identifier in async manner (GET /dir/lookup)
     /// </summary>
     /// <param name="volumeId">Volume identifier</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to lookup volume routes</returns>
-    Task<SeaweedVolumeRoute[]> LookupVolumeRoutesAsync(int volumeId, CancellationToken cancellationToken);
+    Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, CancellationToken cancellationToken);
     /// <summary>
-    ///     Get file content in async manner
+    ///     Get file content from volume server in async manner (GET /{fid})
     /// </summary>
     /// <param name="route">Volume route</param>
     /// <param name="fileId">File identifier</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Async task to file downloading</returns>
-    Task<byte[]> GetFileAsync(SeaweedVolumeRoute route, SeaweedFileId fileId, CancellationToken cancellationToken);
+    /// <returns>Async task to file fetching</returns>
+    Task<byte[]> FetchAsync(SeaweedVolumeRoute route, SeaweedFileId fileId, CancellationToken cancellationToken);
     /// <summary>
     ///     Check file existence in async manner
     /// </summary>
