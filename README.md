@@ -18,7 +18,7 @@ Simple HTTP client implementation for [SeaweedFS](https://github.com/seaweedfs/s
 ## 🚀 Quick start
 
 ```shell
-dotnet add package Viklover.Seaweed --version 1.0.0
+dotnet add package Viklover.Seaweed --version 1.1.0
 ```
 
 ```csharp
