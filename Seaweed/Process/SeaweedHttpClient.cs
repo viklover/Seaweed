@@ -23,7 +23,7 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
     /// <param name="collection">Collection name (optional)</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to file submission</returns>
-    public async Task<SeaweedFileId> SubmitAsync(byte[] file, string? collection = null, CancellationToken cancellationToken = default) {
+    public async Task<SeaweedFileId> SubmitAsync(byte[] file, string? collection, CancellationToken cancellationToken) {
         using var form = new MultipartFormDataContent();
         using var requestContent = new ByteArrayContent(file);
         form.Add(requestContent, "file", "document");
@@ -42,7 +42,7 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
     /// <param name="collection">Collection name (optional)</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to file key assignment</returns>
-    public async Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(string? collection = null, CancellationToken cancellationToken = default) {
+    public async Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(string? collection, CancellationToken cancellationToken) {
         var query = BuildQueryUri("/dir/assign", new Dictionary<string, string?> {
             ["collection"] = collection
         });
@@ -78,7 +78,7 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
     /// <param name="collection">Collection name (optional)</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to lookup volume routes</returns>
-    public async Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, string? collection = null, CancellationToken cancellationToken = default) {
+    public async Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, string? collection, CancellationToken cancellationToken) {
         var query = BuildQueryUri("/dir/lookup", new Dictionary<string, string?> {
             ["volumeId"] = volumeId.ToString(),
             ["collection"] = collection
