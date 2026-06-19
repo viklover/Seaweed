@@ -29,7 +29,7 @@ public class SeaweedHttpClientTest : SeaweedTest {
         var content = GenerateByteArray();
         var (fileId, route) = await client.AssignAsync(Collection, CancellationToken.None);
         await client.UploadAsync(route, fileId, content, CancellationToken.None);
-        var lookupRouteArray = await client.LookupAsync(Collection, fileId.VolumeId, CancellationToken.None);
+        var lookupRouteArray = await client.LookupAsync(fileId.VolumeId, Collection, CancellationToken.None);
         Assert.That(lookupRouteArray, Is.Not.Empty);
         var lookupRoute = lookupRouteArray[0];
         var readContent = await client.FetchAsync(lookupRoute, fileId, CancellationToken.None);

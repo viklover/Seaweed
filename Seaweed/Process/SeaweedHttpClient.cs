@@ -19,11 +19,11 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
     /// <summary>
     ///     Submit new file to SeaweedFS in async manner (POST /submit)
     /// </summary>
-    /// <param name="collection">Collection name</param>
     /// <param name="file">File content</param>
+    /// <param name="collection">Collection name (optional)</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to file submission</returns>
-    public async Task<SeaweedFileId> SubmitAsync(string collection, byte[] file, CancellationToken cancellationToken) {
+    public async Task<SeaweedFileId> SubmitAsync(byte[] file, string? collection = null, CancellationToken cancellationToken = default) {
         using var form = new MultipartFormDataContent();
         using var requestContent = new ByteArrayContent(file);
         form.Add(requestContent, "file", "document");
@@ -39,10 +39,10 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
     /// <summary>
     ///     Assign a file key from SeaweedFS in async manner (GET /dir/assign)
     /// </summary>
-    /// <param name="collection">Collection name</param>
+    /// <param name="collection">Collection name (optional)</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to file key assignment</returns>
-    public async Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(string collection, CancellationToken cancellationToken) {
+    public async Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(string? collection = null, CancellationToken cancellationToken = default) {
         var query = BuildQueryUri("/dir/assign", new Dictionary<string, string?> {
             ["collection"] = collection
         });
@@ -74,11 +74,11 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
     /// <summary>
     ///     Lookup volume routes by volume identifier in async manner (GET /dir/lookup)
     /// </summary>
-    /// <param name="collection">Collection name</param>
     /// <param name="volumeId">Volume identifier</param>
+    /// <param name="collection">Collection name (optional)</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to lookup volume routes</returns>
-    public async Task<SeaweedVolumeRoute[]> LookupAsync(string collection, int volumeId, CancellationToken cancellationToken) {
+    public async Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, string? collection = null, CancellationToken cancellationToken = default) {
         var query = BuildQueryUri("/dir/lookup", new Dictionary<string, string?> {
             ["volumeId"] = volumeId.ToString(),
             ["collection"] = collection
