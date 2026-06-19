@@ -9,27 +9,28 @@ namespace Viklover.Seaweed.Process;
 /// </summary>
 public class SeaweedHttpClient : ISeaweedClient, IDisposable {
     private readonly HttpClient _client = new();
-    private readonly string? _collection;
     /// <summary>
     ///     Constructor
     /// </summary>
     /// <param name="masterServerUri">Base address to master server</param>
-    /// <param name="collection">Collection name (optional)</param>
-    public SeaweedHttpClient(Uri masterServerUri, string? collection = null) {
+    public SeaweedHttpClient(Uri masterServerUri) {
         _client.BaseAddress = masterServerUri;
-        _collection = collection;
     }
     /// <summary>
     ///     Submit new file to SeaweedFS in async manner (POST /submit)
     /// </summary>
     /// <param name="file">File content</param>
     /// <param name="cancellationToken">Cancellation token</param>
+    /// <param name="collection">Collection name (optional)</param>
     /// <returns>Async task to file submission</returns>
-    public async Task<SeaweedFileId> SubmitAsync(byte[] file, CancellationToken cancellationToken) {
+    public async Task<SeaweedFileId> SubmitAsync(byte[] file, CancellationToken cancellationToken, string? collection = null) {
         using var form = new MultipartFormDataContent();
         using var requestContent = new ByteArrayContent(file);
         form.Add(requestContent, "file", "document");
-        using var request = new HttpRequestMessage(HttpMethod.Post, "/submit");
+        var query = BuildQueryUri("/submit", new Dictionary<string, string?> {
+            ["collection"] = collection
+        });
+        using var request = new HttpRequestMessage(HttpMethod.Post, query);
         request.Content = form;
         var responseJson = await ExecuteJsonAsync(request, cancellationToken);
         var fileId = ReadFileId(responseJson);
@@ -39,12 +40,12 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
     ///     Assign a file key from SeaweedFS in async manner (GET /dir/assign)
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
+    /// <param name="collection">Collection name (optional)</param>
     /// <returns>Async task to file key assignment</returns>
-    public async Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(CancellationToken cancellationToken) {
-        var parameters = new Dictionary<string, string?> {
-            ["collection"] = _collection
-        };
-        var query = BuildQueryUri("/dir/assign", parameters);
+    public async Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(CancellationToken cancellationToken, string? collection = null) {
+        var query = BuildQueryUri("/dir/assign", new Dictionary<string, string?> {
+            ["collection"] = collection
+        });
         using var request = new HttpRequestMessage(HttpMethod.Get, query);
         var responseJson = await ExecuteJsonAsync(request, cancellationToken);
         var fileId = ReadFileId(responseJson);
@@ -75,13 +76,13 @@ public class SeaweedHttpClient : ISeaweedClient, IDisposable {
     /// </summary>
     /// <param name="volumeId">Volume identifier</param>
     /// <param name="cancellationToken">Cancellation token</param>
+    /// <param name="collection">Collection name (optional)</param>
     /// <returns>Async task to lookup volume routes</returns>
-    public async Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, CancellationToken cancellationToken) {
-        var parameters = new Dictionary<string, string?> {
+    public async Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, CancellationToken cancellationToken, string? collection = null) {
+        var query = BuildQueryUri("/dir/lookup", new Dictionary<string, string?> {
             ["volumeId"] = volumeId.ToString(),
-            ["collection"] = _collection
-        };
-        var query = BuildQueryUri("/dir/lookup", parameters);
+            ["collection"] = collection
+        });
         using var request = new HttpRequestMessage(HttpMethod.Get, query);
         var response = await ExecuteJsonAsync(request, cancellationToken);
         var routeArray = response
