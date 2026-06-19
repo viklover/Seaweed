@@ -1,4 +1,4 @@
-name: Nuget publish
+name: NuGet publish
 
 on:
   push:
@@ -11,24 +11,34 @@ jobs:
     environment: release
     permissions:
       id-token: write
-    
-    steps:
 
-      - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "7.0.x"
-      
-      - name: Build package
-        run: dotnet pack -c Release Seaweed/Seaweed.csproj -o packages
+          dotnet-version: "8.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore Seaweed/Seaweed.csproj
+
+      - name: Build
+        run: dotnet build Seaweed/Seaweed.csproj -c Release --no-restore
+
+      - name: Pack
+        run: dotnet pack Seaweed/Seaweed.csproj -c Release --no-build -o packages /p:Version=${{ env.VERSION }}
 
       - name: NuGet login (OIDC → temp API key)
         uses: NuGet/login@v1
         id: login
         with:
           user: ${{ secrets.NUGET_USER }}
-    
+
       - name: NuGet push
-        run: dotnet nuget push packages/*.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push packages/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
