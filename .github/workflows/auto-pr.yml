@@ -12,6 +12,7 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: anthropics/claude-code-action@v1
@@ -22,10 +23,13 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          track_progress: true
           prompt: |
             Resolve GitHub Issue #${{ github.event.issue.number }}.
             Title: ${{ github.event.issue.title }}
             Description: ${{ github.event.issue.body }}
             Implement the required changes, create a new branch, commit your work, and open a Pull Request.
             Before submitting, make sure the project builds successfully and all unit tests pass.
-    
+          
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
