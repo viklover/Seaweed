@@ -6,16 +6,18 @@ public interface ISeaweedClient {
     /// <summary>
     ///     Submit new file to SeaweedFS in async manner (POST /submit)
     /// </summary>
+    /// <param name="collection">Collection name</param>
     /// <param name="file">File content</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to file submission</returns>
-    Task<SeaweedFileId> SubmitAsync(byte[] file, CancellationToken cancellationToken);
+    Task<SeaweedFileId> SubmitAsync(string collection, byte[] file, CancellationToken cancellationToken);
     /// <summary>
     ///     Assign a file key from SeaweedFS in async manner (GET /dir/assign)
     /// </summary>
+    /// <param name="collection">Collection name</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to file key assignment</returns>
-    Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(CancellationToken cancellationToken);
+    Task<(SeaweedFileId, SeaweedVolumeRoute)> AssignAsync(string collection, CancellationToken cancellationToken);
     /// <summary>
     ///     Upload file content by identifier in async manner
     /// </summary>
@@ -28,10 +30,11 @@ public interface ISeaweedClient {
     /// <summary>
     ///     Lookup volume routes by volume identifier in async manner (GET /dir/lookup)
     /// </summary>
+    /// <param name="collection">Collection name</param>
     /// <param name="volumeId">Volume identifier</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Async task to lookup volume routes</returns>
-    Task<SeaweedVolumeRoute[]> LookupAsync(int volumeId, CancellationToken cancellationToken);
+    Task<SeaweedVolumeRoute[]> LookupAsync(string collection, int volumeId, CancellationToken cancellationToken);
     /// <summary>
     ///     Get file content from volume server in async manner (GET /{fid})
     /// </summary>
