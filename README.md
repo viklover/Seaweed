@@ -23,29 +23,31 @@ dotnet add package Viklover.Seaweed --version 1.0.0
 ```csharp
 using Viklover.Seaweed.Process;
 
-// Create client with master server URI and optional collection name
-
+// Create client with master server URI
 var masterUri = new Uri("http://localhost:9333");
-using var client = new SeaweedHttpClient(masterUri, "MyCollection");
+using var client = new SeaweedHttpClient(masterUri);
 
-// Single-step upload
-var fileId = await client.UploadAsync(fileContent, cancellationToken);
+// Read file from filesystem
+byte[] fileContent = await File.ReadAllBytesAsync("path/to/file");
 
-// Two-step upload (allows custom volume selection)
-var (assignedId, volumeRoute) = await client.CreateFileAsync(cancellationToken);
-await client.UploadAsync(volumeRoute, assignedId, fileContent, cancellationToken);
+// Single-step submit (collection is optional)
+SeaweedFileId fileId = await client.SubmitAsync(fileContent, cancellationToken, "MyCollection");
+
+// Two-step: assign + upload (collection is optional on assign)
+var (fileId, volumeRoute) = await client.AssignAsync(cancellationToken, "MyCollection");
+await client.UploadAsync(volumeRoute, fileId, fileContent, cancellationToken);
 
 // Download
-var content = await client.GetFileAsync(volumeRoute, fileId, cancellationToken);
+byte[] content = await client.FetchAsync(volumeRoute, fileId, cancellationToken);
 
 // Check existence
-var exists = await client.ExistsFileAsync(volumeRoute, fileId, cancellationToken);
+bool exists = await client.ExistsFileAsync(volumeRoute, fileId, cancellationToken);
 
 // Delete
 await client.DeleteAsync(volumeRoute, fileId, cancellationToken);
 
 // Lookup volume routes
-var routes = await client.LookupVolumeRoutesAsync(fileId.VolumeId, cancellationToken);
+SeaweedVolumeRoute[] routes = await client.LookupAsync(fileId.VolumeId, cancellationToken, "MyCollection");
 ```
 
 ## 🛠️ Contribution
