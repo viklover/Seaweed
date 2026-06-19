@@ -1,0 +1,30 @@
+name: Auto PR's
+
+on:
+  issues:
+    types: [labeled]  # когда ставишь лейбл "agent-ready"
+
+jobs:
+  solve-issue:
+    if: contains(github.event.label.name, 'agent-ready')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anthropics/claude-code-action@beta
+        env:
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_MODEL: deepseek-chat
+          ANTHROPIC_SMALL_FAST_MODEL: deepseek-chat
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            Resolve GitHub Issue #${{ github.event.issue.number }}.
+            Title: ${{ github.event.issue.title }}
+            Description: ${{ github.event.issue.body }}
+            Implement the required changes, create a new branch, commit your work, and open a Pull Request.
+            Before submitting, make sure the project builds successfully and all unit tests pass.
+    
