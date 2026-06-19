@@ -3,8 +3,6 @@ name: Auto PR's
 on:
   issues:
     types: [labeled]  # когда ставишь лейбл "agent-ready"
-  issue_comment:
-    types: [created]
 
 jobs:
   solve-issue:
