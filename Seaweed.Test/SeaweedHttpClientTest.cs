@@ -99,4 +99,12 @@ public class SeaweedHttpClientTest : SeaweedTest {
         var readContent = await client.FetchAsync(lookupRoute, fileId, CancellationToken.None);
         Assert.That(readContent, Is.EqualTo(content).AsCollection);
     }
+    [Test(Description = "Negative test: file submitted with collection NOT found via lookup with a different collection")]
+    public async Task SubmitWithCollectionLookupWithWrongCollectionTest() {
+        var client = new SeaweedHttpClient(MasterUri);
+        var content = GenerateByteArray();
+        var fileId = await client.SubmitAsync(content, CancellationToken.None, Collection);
+        var lookupRouteArray = await client.LookupAsync(fileId.VolumeId, CancellationToken.None, "WRONG");
+        Assert.That(lookupRouteArray, Is.Empty);
+    }
 }
