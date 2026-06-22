@@ -66,4 +66,26 @@ public class SeaweedHttpClientTest : SeaweedTest {
         var exists = await client.ExistsFileAsync(route, fileId, CancellationToken.None);
         Assert.That(exists, Is.False);
     }
+    [Test(Description = "Test for correct file submitting with collection parameter")]
+    public async Task SubmitWithCollectionTest() {
+        var client = new SeaweedHttpClient(MasterUri);
+        var content = GenerateByteArray();
+        var fileId = await client.SubmitAsync(content, CancellationToken.None, Collection);
+        var lookupRouteArray = await client.LookupAsync(fileId.VolumeId, CancellationToken.None, Collection);
+        Assert.That(lookupRouteArray, Is.Not.Empty);
+        var lookupRoute = lookupRouteArray[0];
+        var readContent = await client.FetchAsync(lookupRoute, fileId, CancellationToken.None);
+        Assert.That(readContent, Is.EqualTo(content).AsCollection);
+    }
+    [Test(Description = "Test for correct file submitting without collection parameter")]
+    public async Task SubmitWithoutCollectionTest() {
+        var client = new SeaweedHttpClient(MasterUri);
+        var content = GenerateByteArray();
+        var fileId = await client.SubmitAsync(content, CancellationToken.None);
+        var lookupRouteArray = await client.LookupAsync(fileId.VolumeId, CancellationToken.None);
+        Assert.That(lookupRouteArray, Is.Not.Empty);
+        var lookupRoute = lookupRouteArray[0];
+        var readContent = await client.FetchAsync(lookupRoute, fileId, CancellationToken.None);
+        Assert.That(readContent, Is.EqualTo(content).AsCollection);
+    }
 }
